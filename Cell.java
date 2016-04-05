@@ -34,20 +34,34 @@ public class Cell extends JButton {
 	String text = getText();
 	return (text.equals("X"));
     }
-
-    public String toString() {
-	String toReturn = new String("");
-	String currentState = getText();
-	for (int j = 0; j < _maxSize; j++) {
-	    toReturn += currentState;
-	}
-	if (toReturn.substring(0,1).equals("X")) {
-	    return toReturn.substring(0,1);
-	} else {
-	    return ".";
-	}
-
+	
+	/*
+	 * Original toString() method with unnecessary loop (only checks first character anyway)
+	 */
+    public String originalToString() {
+		String toReturn = new String("");
+		String currentState = getText();
+		for (int j = 0; j < _maxSize; j++) {
+			toReturn += currentState;
+		}
+		if (toReturn.substring(0,1).equals("X")) {
+			return toReturn.substring(0,1);
+		} else {
+			return ".";
+		}
     }
+	
+	/*
+	 * Reworked toString() method that eliminates unnecessary loop 
+	 * Returns currentState, as the original does implicitly
+	 */
+	public String toString() {
+		String currentState = getText();
+		if (currentState.equals("X"))
+			return currentState;
+		else
+			return ".";
+	}
     
     public void setAlive(boolean a) {
 	// note that "if (a)" and "if (a == true)"

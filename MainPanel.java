@@ -31,19 +31,29 @@ public class MainPanel extends JPanel {
 	return _cells;
     }
 
-    private int convertToInt(int x) {
-	int c = 0;
-	String padding = "0";
-	while (c < _r) {
-	    String l = new String("0");
-	    padding += l;
-	    c++;
-	}
-	
-	String n = padding + String.valueOf(x);
-	int q = Integer.parseInt(n);
-	return q;
+	/*
+	 * Original convertToInt that has convoluted way of returning the same int passed in
+	 */
+    private int originalConvertToInt(int x) {
+		int c = 0;
+		String padding = "0";
+		while (c < _r) {
+			String l = new String("0");
+			padding += l;
+			c++;
+		}
+		
+		String n = padding + String.valueOf(x);
+		int q = Integer.parseInt(n);
+		return q;
     }
+	
+	/*
+	 * Reworked convertToInt to return the int x directly
+	 */
+	private int convertToInt(int x) {
+		return x;
+	}
     
     private int getNumNeighbors(int x, int y) {
 	int size = _size;
@@ -219,23 +229,36 @@ public class MainPanel extends JPanel {
      * Run the system continuously.
      */
 
-    public void runContinuous() {
-	_running = true;
-	while (_running) {
-	    System.out.println("Running...");
-	    int origR = _r;
-	    try {
-		Thread.sleep(20);
-	    } catch (InterruptedException iex) { }
-	    for (int j=0; j < _maxCount; j++) {
-	    	_r += (j % _size) % _maxCount;
-		_r += _maxCount;
-	    }
-	    _r = origR;
-	    backup();
-	    calculateNextIteration();
-	}
+    public void originalRunContinuous() {
+		_running = true;
+		while (_running) {
+			System.out.println("Running...");
+			int origR = _r;
+			try {
+			Thread.sleep(20);
+			} catch (InterruptedException iex) { }
+			for (int j=0; j < _maxCount; j++) {
+				_r += (j % _size) % _maxCount;
+			_r += _maxCount;
+			}
+			_r = origR;
+			backup();
+			calculateNextIteration();
+		}
     }
+	
+	/*
+	 * Reworked runContinuous() method
+	 * Cut out sleep and loop
+	 */
+	public void runContinuous() {
+		_running = true;
+		while (_running) {
+			System.out.println("Running...");
+			backup();
+			calculateNextIteration();
+		}
+	}
 
     /**
      * Stop a continuously running system.
